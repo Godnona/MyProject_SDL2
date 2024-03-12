@@ -15,6 +15,12 @@ int main(int argc, char* argv[])
     BaseObject *bg = new BaseObject;
     bg->LoadImage(g_renderer, PATH_BACKGROUND);
 
+    BaseObject *player = new BaseObject;
+    player->LoadImage(g_renderer, PATH_PLAYER);
+    player->SetPos(SCREEN_WIDTH / 2, SCREEN_HEIGHT - 32 * 6);
+    player->SetSize(32, 32);
+    SDL_Rect *srcRect = new SDL_Rect{32,0,32 ,32 - 3};
+
     Map *map = new Map;
     map->MapLoadFormat(PATH_MAP_FORMAT);
     map->MapLoadImage(g_renderer);
@@ -40,6 +46,8 @@ int main(int argc, char* argv[])
 
         bg->Render(g_renderer, NULL);
         map->MapRender(g_renderer);
+        
+        player->Render(g_renderer, srcRect);
         
         SDL_RenderPresent(g_renderer);
 

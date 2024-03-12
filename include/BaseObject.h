@@ -13,11 +13,12 @@ class BaseObject
         BaseObject(/* args */);
         ~BaseObject();
 
-        void SetRect(int x, int y);
-        SDL_Rect GetRect();
+        void SetPos(int x, int y);
+        SDL_Rect GetPos();
         SDL_Texture* GetTexture();
+        void SetSize(int w, int h);
 
-        void LoadImage(SDL_Renderer *renderer, const char *filePath);
+        virtual void LoadImage(SDL_Renderer *renderer, const char *filePath);
         void Render(SDL_Renderer *renderer, SDL_Rect *src = NULL);
 
 };

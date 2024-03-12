@@ -73,7 +73,7 @@ void Map::MapRender(SDL_Renderer *renderer)
             int value = mapStruct.status[block_Y][block_X];
             if(value != 0)
             {
-                loadFormat[value].SetRect(j, i);
+                loadFormat[value].SetPos(j, i);
                 loadFormat[value].Render(renderer);
             
             }

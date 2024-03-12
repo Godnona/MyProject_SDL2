@@ -16,13 +16,13 @@ BaseObject::~BaseObject()
 
 /*=============================|Set_Get|=============================*/
 
-void BaseObject::SetRect(int x, int y)
+void BaseObject::SetPos(int x, int y)
 {
     rect.x = x;
     rect.y = y;
 };
 
-SDL_Rect BaseObject::GetRect()
+SDL_Rect BaseObject::GetPos()
 {
     return rect;
 }
@@ -30,6 +30,12 @@ SDL_Rect BaseObject::GetRect()
 SDL_Texture* BaseObject::GetTexture()
 {
     return texture;
+}
+
+void BaseObject::SetSize(int w, int h)
+{
+    rect.w = w;
+    rect.h = h;
 }
 
 /*=============================|Handle|=============================*/

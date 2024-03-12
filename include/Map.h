@@ -6,8 +6,8 @@
 #include "BaseObject.h"
 
 #define MAX_MAP_X 69
-#define MAX_MAP_Y 12
-#define BLOCK_SIZE 64
+#define MAX_MAP_Y 25
+#define BLOCK_SIZE 32
 #define MAX_MAP_FORMAT 12
 
 typedef struct
@@ -20,20 +20,20 @@ typedef struct
 
 } MapStruct;
 
-class Object : public BaseObject
+class ObjectMap : public BaseObject
 {
     private:
         
     public:
-        Object(){;};
-        ~Object(){;};
+        ObjectMap(){;};
+        ~ObjectMap(){;};
 };
 
 
 class Map
 {
     private:
-        Object loadFormat[MAX_MAP_FORMAT];
+        ObjectMap loadFormat[MAX_MAP_FORMAT];
         MapStruct mapStruct;
     public:
         Map(){;};
