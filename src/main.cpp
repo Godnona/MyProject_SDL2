@@ -5,6 +5,7 @@
 #include "Def.h"
 #include "BaseObject.h"
 #include "Map.h"
+#include "Animation.h"
 
 int Init();
 
@@ -12,49 +13,44 @@ int main(int argc, char* argv[])
 {
     if(Init() == 0) return -1;
     
+    // Background
     BaseObject *bg = new BaseObject;
     bg->LoadImage(g_renderer, PATH_BACKGROUND);
-
-    BaseObject *player = new BaseObject;
-    player->LoadImage(g_renderer, PATH_PLAYER);
-    player->SetPos(SCREEN_WIDTH / 2, SCREEN_HEIGHT - 32 * 6);
-    player->SetSize(32, 32);
-    SDL_Rect *srcRect = new SDL_Rect{32,0,32 ,32 - 3};
-
+    
+    // Map
     Map *map = new Map;
     map->MapLoadFormat(PATH_MAP_FORMAT);
     map->MapLoadImage(g_renderer);
 
+    // Player
+    Animation *player = new Animation;
+    player->LoadImage(g_renderer, PATH_PLAYER_IDLE);
+    player->SetFrame(FRAME_RUN);
 
     bool isRunning = true;
     while(isRunning)
     {
         while(SDL_PollEvent(&g_event))
         {
-            switch (g_event.type)
-            {
-                case SDL_QUIT:
-                    isRunning = false;
-                    break;
-                
-                default:
-                    break;
-            }
+            if(g_event.type == SDL_QUIT)
+                isRunning = false;
+            player->HandleInput(g_renderer, g_event);
 
         }
+
         SDL_RenderClear(g_renderer);
 
         bg->Render(g_renderer, NULL);
         map->MapRender(g_renderer);
-        
-        player->Render(g_renderer, srcRect);
-        
+        player->Draw(g_renderer);
+
         SDL_RenderPresent(g_renderer);
 
     }
 
     delete bg;bg = NULL;
     delete map; map = NULL;
+    delete player; player = NULL;
 
     IMG_Quit();
     SDL_Quit();

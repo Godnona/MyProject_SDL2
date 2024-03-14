@@ -6,8 +6,9 @@
 #include <stdio.h>
 #include <SDL.h>
 #include <SDL_image.h>
+#include <algorithm>
 
-// Variable
+// Global
 static SDL_Window *g_window = NULL;
 static SDL_Renderer *g_renderer = NULL;
 static SDL_Event g_event;
@@ -21,7 +22,26 @@ static SDL_Event g_event;
 #define PATH_BACKGROUND "../assets/images/map/bg2.png"
 #define PATH_MAP_FORMAT "../assets/images/map/mapFormat.txt"
 #define PATH_MAP_IMG "../assets/images/map/Tileset%d.png"
+#define PATH_PLAYER_IDLE "../assets/images/player/_Idle.png"
+#define PATH_PLAYER_RUN_LEFT "../assets/images/player/_Run_Left.png"
+#define PATH_PLAYER_RUN_RIGHT "../assets/images/player/_Run_Right.png"
 
-#define PATH_PLAYER "../assets/images/player/character0.png"
+
+// Input
+typedef struct
+{
+    int left;
+    int right;
+    int up;
+    int down;
+    int jump;
+} Input;
+
+// Animation class
+#define FRAME_RUN 10
+#define SPEED_PLAYER 8
+#define SPEED_GRAVITY 0.1
+#define MAX_GRAVITY
+
 
 #endif // DEF_H
