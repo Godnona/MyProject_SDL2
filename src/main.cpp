@@ -42,6 +42,9 @@ int main(int argc, char* argv[])
 
         bg->Render(g_renderer, NULL);
         map->MapRender(g_renderer);
+
+        MapStruct map_data = map->GetMap();
+        player->Move(map_data);
         player->Draw(g_renderer);
 
         SDL_RenderPresent(g_renderer);

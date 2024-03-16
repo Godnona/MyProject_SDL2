@@ -10,7 +10,7 @@ class Animation : public BaseObject
 {
 private:
     float x_pos, y_pos;
-    float x_move, y_move;
+    float x_speed, y_speed;
     int width_frame, height_frame;
 
     SDL_Rect source[FRAME_RUN];
@@ -18,6 +18,8 @@ private:
 
     int frame;
     int status;
+
+    bool isGround;
 
 public:
     Animation();

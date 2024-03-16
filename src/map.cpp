@@ -1,5 +1,11 @@
 #include "Map.h"
 
+// ========================= Get-Set =========================
+MapStruct Map::GetMap() 
+{
+    return mapStruct;
+};
+
 void Map::MapLoadFormat(const char *filePath)
 {
     FILE *file = NULL;
