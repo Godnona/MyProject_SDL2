@@ -15,6 +15,14 @@ Animation::Animation()
     input.jump = 0;
 
     isGround = false;
+    map_x = 0;
+    map_y = 0;
+}
+
+void Animation::SetCamera(int x, int y)
+{
+    map_x = x;
+    map_y = y;
 }
 
 void Animation::LoadImage(SDL_Renderer*renderer, const char *filePath)
@@ -53,8 +61,8 @@ void Animation::Draw(SDL_Renderer *renderer)
     else frame = 0;
     if(frame >= FRAME_RUN) frame = 0;
     
-    rect.x = x_pos;
-    rect.y = y_pos;
+    rect.x = x_pos - map_x;
+    rect.y = y_pos - map_y;
 
     SDL_Rect *srcRect = &source[frame];
     SDL_Rect *dstRect = new SDL_Rect{rect.x, rect.y, width_frame, height_frame};
@@ -128,11 +136,12 @@ void Animation::Move(MapStruct &map)
         y_speed = MAX_GRAVITY;
     
     if(input.left == 1)
-        x_speed += -1;
+        x_speed += -SPEED_PLAYER;
     else if(input.right == 1)
-        x_speed += 1;
+        x_speed += SPEED_PLAYER;
 
     CheckCollider(map);
+    MoveCamera(map);
 }
 
 void Animation::CheckCollider(MapStruct &map)
@@ -148,11 +157,14 @@ void Animation::CheckCollider(MapStruct &map)
     y1 = y_pos / BLOCK_SIZE;
     y2 = (y_pos + height_min - 1) / BLOCK_SIZE;
 
+    std::cout << x1 << " " << x2 << "\t";
+    std::cout << y1 << " " << y2 << std::endl;
+    
     if(x1 >= 0 && x2 < MAX_MAP_X && y1 >= 0 && y2 < MAX_MAP_Y)
     {
         if(x_speed > 0)
         {
-            if(map.status[y1][x2] > 0 && map.status[y2][x2] > 0)
+            if(map.status[y1][x2] > 0 || map.status[y2][x2] > 0)
             {
                 x_pos = x2 * BLOCK_SIZE;
                 x_pos -= width_frame + 1;
@@ -161,7 +173,7 @@ void Animation::CheckCollider(MapStruct &map)
         }
         else if(x_speed < 0)
         {
-            if(map.status[y1][x1] != 0 && map.status[y2][x1] != 0)
+            if(map.status[y1][x1] != 0 || map.status[y2][x1] != 0)
             {
                 x_pos = (x1 + 1) * BLOCK_SIZE ;
                 x_speed = 0;
@@ -172,7 +184,7 @@ void Animation::CheckCollider(MapStruct &map)
     // Check Vertical
     int width_min = std::min(width_frame, BLOCK_SIZE);
     x1 = x_pos / BLOCK_SIZE;
-    x2 = (x_pos + width_min - 21) / BLOCK_SIZE;
+    x2 = (x_pos + width_min) / BLOCK_SIZE;
 
     y1 = (y_pos + y_speed) / BLOCK_SIZE;
     y2 = (y_pos + y_speed + height_frame - 1) / BLOCK_SIZE;
@@ -181,7 +193,7 @@ void Animation::CheckCollider(MapStruct &map)
     {
         if(y_speed > 0)
         {
-            if(map.status[y2][x1] > 0 && map.status[y2][x2] > 0)
+            if(map.status[y2][x1] > 0 || map.status[y2][x2] > 0)
             {
                 y_pos = y2 * BLOCK_SIZE;
                 y_pos -= height_frame + 1;
@@ -191,7 +203,7 @@ void Animation::CheckCollider(MapStruct &map)
         }
         else if(y_speed < 0)
         {
-            if(map.status[y1][x1] > 0 && map.status[y1][x2] > 0)
+            if(map.status[y1][x1] > 0 || map.status[y1][x2] > 0)
             {
                 y_pos = (y1 + 1) * BLOCK_SIZE;
                 y_speed = 0;
@@ -206,4 +218,17 @@ void Animation::CheckCollider(MapStruct &map)
     if(x_pos < 0) x_pos = 0;
     else if(x_pos + width_frame > map.end_X) x_pos = map.end_X - width_frame; 
 
+}
+
+void Animation::MoveCamera(MapStruct &map)
+{
+    map.start_X = x_pos - (SCREEN_WIDTH / 2);
+    if(map.start_X < 0) map.start_X = 0;
+    else if(map.start_X + SCREEN_WIDTH > map.end_X) map.start_X = map.end_X - SCREEN_WIDTH;
+
+    map.start_Y = 0;
+    map.start_Y = y_pos - (SCREEN_HEIGHT / 2);
+    if(map.start_Y < 0) map.start_Y = 0;
+    else if(map.start_Y + SCREEN_HEIGHT > map.end_Y) map.start_Y = map.end_Y - SCREEN_HEIGHT;
+    
 }

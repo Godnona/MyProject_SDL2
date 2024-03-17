@@ -39,10 +39,13 @@ class Map
         Map(){;};
         ~Map(){;};
 
+        void SetMap(MapStruct& mapStruct);
+        MapStruct GetMap();
+        
         void MapLoadFormat(const char *filePath);
         void MapLoadImage(SDL_Renderer *renderer);
         void MapRender(SDL_Renderer *renderer);
-        MapStruct GetMap();
+       
 };
 
 #endif // MAP_H

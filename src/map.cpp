@@ -6,6 +6,11 @@ MapStruct Map::GetMap()
     return mapStruct;
 };
 
+void Map::SetMap(MapStruct& mapStruct)
+{
+    this->mapStruct = mapStruct;
+}
+
 void Map::MapLoadFormat(const char *filePath)
 {
     FILE *file = NULL;

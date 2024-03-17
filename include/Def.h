@@ -39,9 +39,9 @@ typedef struct
 
 // Animation class
 #define FRAME_RUN 8
-#define SPEED_PLAYER 8
-#define SPEED_GRAVITY 0.05
+#define SPEED_PLAYER 6
+#define SPEED_GRAVITY 0.8
 #define MAX_GRAVITY 9.8
-
+#define FPS 30
 
 #endif // DEF_H

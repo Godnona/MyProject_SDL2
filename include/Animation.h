@@ -21,6 +21,9 @@ private:
 
     bool isGround;
 
+    int map_x;
+    int map_y;
+
 public:
     Animation();
     ~Animation(){;};
@@ -30,7 +33,8 @@ public:
         RUN_LEFT = -1,
         RUN_RIGHT = 1
     };
-
+    void SetCamera(int x, int y);
+    
     void LoadImage(SDL_Renderer*renderer, const char *filePath);
     void SetFrame(int frameCount);
     void Draw(SDL_Renderer *renderer);
@@ -38,6 +42,7 @@ public:
 
     void Move(MapStruct &map);
     void CheckCollider(MapStruct &map);
+    void MoveCamera(MapStruct &map);
 
 };
 
