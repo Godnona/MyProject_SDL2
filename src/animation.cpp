@@ -6,14 +6,15 @@ Animation::Animation()
     x_speed = 0; y_speed = 0;
     width_frame = 0; height_frame = 0;
     frame = 0;
-    status = 1;
+    status = 0;
 
+    input.idle = 1;
     input.left = 0;
     input.right = 0;
     input.up = 0;
     input.down = 0;
     input.jump = 0;
-
+    isRight = true;
     isGround = false;
     map_x = 0;
     map_y = 0;
@@ -29,7 +30,7 @@ void Animation::LoadImage(SDL_Renderer*renderer, const char *filePath)
 {
     BaseObject::LoadImage(renderer, filePath);
 
-    width_frame = rect.w / FRAME_RUN ;
+    width_frame = rect.w / FRAME_PLAYER;
     height_frame = rect.h;
 }
 
@@ -53,14 +54,20 @@ void Animation::Draw(SDL_Renderer *renderer)
 {
     if(status == RUN_LEFT)
         LoadImage(renderer, PATH_PLAYER_RUN_LEFT);
-    if(status == RUN_RIGHT)
+    else if(status == RUN_RIGHT)
         LoadImage(renderer, PATH_PLAYER_RUN_RIGHT);
+    else if(status == IDLE_LEFT && isRight == false)
+        LoadImage(renderer, PATH_PLAYER_IDLE_LEFT);
+    else if(status == IDLE_LEFT && isRight == true)
+        LoadImage(renderer, PATH_PLAYER_IDLE_RIGHT);
 
-    if(input.right == 1 || input.left == 1)
+    if(input.right == 1 || input.left == 1 || input.idle == 1)
         frame++;
-    else frame = 0;
-    if(frame >= FRAME_RUN) frame = 0;
+    //else frame = 0;
+    if(frame >= FRAME_PLAYER) frame = 0;
     
+    std::cout << input.left << " " << input.idle << " " << input.right << "\n";
+
     rect.x = x_pos - map_x;
     rect.y = y_pos - map_y;
 
@@ -80,27 +87,36 @@ void Animation::HandleInput(SDL_Renderer *renderer, SDL_Event event)
         {
             case SDLK_d:
                 status = RUN_RIGHT;
+                input.idle = 0;
                 input.right = 1;
                 input.left = 0;
+                isRight = true;
                 break;
             case SDLK_RIGHT:
                 status = RUN_RIGHT;
+                input.idle = 0;
                 input.right = 1;
                 input.left = 0;
+                isRight = true;
                 break;
             case SDLK_a:
                 status = RUN_LEFT;
+                input.idle = 0;
                 input.left = 1;
                 input.right = 0;
+                isRight = false;
                 break;
             case SDLK_LEFT:
                 status = RUN_LEFT;
+                input.idle = 0;
                 input.left = 1;
                 input.right = 0;
+                isRight = false;
                 break;
                 
-            
             default:
+                //status = IDLE_LEFT;
+                //input.idle = 1;
                 break;
         }
     }
@@ -109,20 +125,33 @@ void Animation::HandleInput(SDL_Renderer *renderer, SDL_Event event)
         switch (event.key.keysym.sym)
         {
             case SDLK_d:
+                status = IDLE_LEFT;
+                input.idle = 1;
                 input.right = 0;
+                isRight = true;
                 break;
             case SDLK_RIGHT:
+                status = IDLE_LEFT;
+                input.idle = 1;
                 input.right = 0;
+                isRight = true;
                 break;
             case SDLK_a:
+                status = IDLE_LEFT;
+                input.idle = 1;
                 input.left = 0;
+                isRight = false;
                 break;
             case SDLK_LEFT:
+                status = IDLE_LEFT;
+                input.idle = 1;
                 input.left = 0;
+                isRight = false;
                 break;
                 
-            
             default:
+                status = IDLE_LEFT;
+                input.idle = 1;
                 break;
         }
     }
@@ -156,9 +185,6 @@ void Animation::CheckCollider(MapStruct &map)
 
     y1 = y_pos / BLOCK_SIZE;
     y2 = (y_pos + height_min - 1) / BLOCK_SIZE;
-
-    std::cout << x1 << " " << x2 << "\t";
-    std::cout << y1 << " " << y2 << std::endl;
     
     if(x1 >= 0 && x2 < MAX_MAP_X && y1 >= 0 && y2 < MAX_MAP_Y)
     {

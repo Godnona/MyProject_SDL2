@@ -13,13 +13,14 @@ private:
     float x_speed, y_speed;
     int width_frame, height_frame;
 
-    SDL_Rect source[FRAME_RUN];
+    SDL_Rect source[FRAME_PLAYER];
     Input input;
 
     int frame;
     int status;
 
     bool isGround;
+    bool isRight;
 
     int map_x;
     int map_y;
@@ -31,7 +32,8 @@ public:
     enum RunType
     {
         RUN_LEFT = -1,
-        RUN_RIGHT = 1
+        RUN_RIGHT = 1,
+        IDLE_LEFT = 0,
     };
     void SetCamera(int x, int y);
     

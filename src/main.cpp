@@ -26,8 +26,8 @@ int main(int argc, char* argv[])
 
     // Player
     Animation *player = new Animation;
-    player->LoadImage(g_renderer, PATH_PLAYER_IDLE);
-    player->SetFrame(FRAME_RUN);
+    player->LoadImage(g_renderer, PATH_PLAYER_IDLE_LEFT);
+    player->SetFrame(FRAME_PLAYER);
 
     bool isRunning = true;
     while(isRunning)
